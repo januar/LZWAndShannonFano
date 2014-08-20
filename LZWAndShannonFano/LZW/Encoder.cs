@@ -5,14 +5,14 @@ using System.Text;
 
 namespace LZWAndShannonFano.LZW
 {
-    class Encode : IDisposable
+    class Encoder : IDisposable
     {
         public Dictionary<string, int> dict = new Dictionary<string, int>();
         ANSI table = null;
         int codeLen = 8;
         bool disposed = false;
 
-        public Encode()
+        public Encoder()
         {
             table = new ANSI();
             dict = table.Table;

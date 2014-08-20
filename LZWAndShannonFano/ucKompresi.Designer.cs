@@ -43,6 +43,12 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.lblInfo = new System.Windows.Forms.Label();
+            this.txtKompresiFile = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtFileSizeKompresi = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtWktKompresi = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pctImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,9 +68,9 @@
             this.lblTitleUC.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitleUC.Location = new System.Drawing.Point(10, 9);
             this.lblTitleUC.Name = "lblTitleUC";
-            this.lblTitleUC.Size = new System.Drawing.Size(93, 13);
+            this.lblTitleUC.Size = new System.Drawing.Size(148, 13);
             this.lblTitleUC.TabIndex = 2;
-            this.lblTitleUC.Text = "LZW Algorithim";
+            this.lblTitleUC.Text = "Kompresi LZW Algorithim";
             // 
             // txtFile
             // 
@@ -141,7 +147,7 @@
             // 
             // btnKompres
             // 
-            this.btnKompres.Location = new System.Drawing.Point(502, 286);
+            this.btnKompres.Location = new System.Drawing.Point(502, 299);
             this.btnKompres.Name = "btnKompres";
             this.btnKompres.Size = new System.Drawing.Size(75, 23);
             this.btnKompres.TabIndex = 12;
@@ -151,7 +157,7 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(13, 286);
+            this.progressBar1.Location = new System.Drawing.Point(13, 299);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(468, 23);
             this.progressBar1.TabIndex = 13;
@@ -161,19 +167,74 @@
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
             // lblInfo
             // 
             this.lblInfo.AutoSize = true;
-            this.lblInfo.Location = new System.Drawing.Point(10, 270);
+            this.lblInfo.Location = new System.Drawing.Point(19, 277);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(0, 13);
             this.lblInfo.TabIndex = 14;
+            // 
+            // txtKompresiFile
+            // 
+            this.txtKompresiFile.Location = new System.Drawing.Point(324, 201);
+            this.txtKompresiFile.Name = "txtKompresiFile";
+            this.txtKompresiFile.Size = new System.Drawing.Size(253, 20);
+            this.txtKompresiFile.TabIndex = 16;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(321, 185);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(68, 13);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "File kompresi";
+            // 
+            // txtFileSizeKompresi
+            // 
+            this.txtFileSizeKompresi.Location = new System.Drawing.Point(324, 238);
+            this.txtFileSizeKompresi.Name = "txtFileSizeKompresi";
+            this.txtFileSizeKompresi.Size = new System.Drawing.Size(253, 20);
+            this.txtFileSizeKompresi.TabIndex = 18;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(321, 222);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(103, 13);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "Ukuran file kompresi";
+            // 
+            // txtWktKompresi
+            // 
+            this.txtWktKompresi.Location = new System.Drawing.Point(324, 274);
+            this.txtWktKompresi.Name = "txtWktKompresi";
+            this.txtWktKompresi.Size = new System.Drawing.Size(253, 20);
+            this.txtWktKompresi.TabIndex = 20;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(321, 258);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(84, 13);
+            this.label6.TabIndex = 19;
+            this.label6.Text = "Waktu kompresi";
             // 
             // ucKompresi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.txtWktKompresi);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.txtFileSizeKompresi);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.txtKompresiFile);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.lblInfo);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.btnKompres);
@@ -212,6 +273,12 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.Label lblInfo;
+        private System.Windows.Forms.TextBox txtKompresiFile;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtFileSizeKompresi;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtWktKompresi;
+        private System.Windows.Forms.Label label6;
 
 
     }

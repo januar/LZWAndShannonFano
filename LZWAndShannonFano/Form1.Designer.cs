@@ -30,14 +30,14 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tentangPengembangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kompresiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lZWAlgorithimToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shannonFanoAlgorithimToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dekompresiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lZWAlgorithimToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.shannonFanoAlgorithimToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tentangPengembangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,20 +61,6 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tentangPengembangToolStripMenuItem});
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
-            this.aboutToolStripMenuItem.Text = "About";
-            // 
-            // tentangPengembangToolStripMenuItem
-            // 
-            this.tentangPengembangToolStripMenuItem.Name = "tentangPengembangToolStripMenuItem";
-            this.tentangPengembangToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.tentangPengembangToolStripMenuItem.Text = "Tentang Pengembang";
-            // 
             // kompresiToolStripMenuItem
             // 
             this.kompresiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -96,6 +82,7 @@
             this.shannonFanoAlgorithimToolStripMenuItem.Name = "shannonFanoAlgorithimToolStripMenuItem";
             this.shannonFanoAlgorithimToolStripMenuItem.Size = new System.Drawing.Size(212, 22);
             this.shannonFanoAlgorithimToolStripMenuItem.Text = "Shannon-Fano Algorithim";
+            this.shannonFanoAlgorithimToolStripMenuItem.Click += new System.EventHandler(this.shannonFanoAlgorithimToolStripMenuItem_Click);
             // 
             // dekompresiToolStripMenuItem
             // 
@@ -111,12 +98,28 @@
             this.lZWAlgorithimToolStripMenuItem1.Name = "lZWAlgorithimToolStripMenuItem1";
             this.lZWAlgorithimToolStripMenuItem1.Size = new System.Drawing.Size(212, 22);
             this.lZWAlgorithimToolStripMenuItem1.Text = "LZW Algorithim";
+            this.lZWAlgorithimToolStripMenuItem1.Click += new System.EventHandler(this.lZWAlgorithimToolStripMenuItem1_Click);
             // 
             // shannonFanoAlgorithimToolStripMenuItem1
             // 
             this.shannonFanoAlgorithimToolStripMenuItem1.Name = "shannonFanoAlgorithimToolStripMenuItem1";
             this.shannonFanoAlgorithimToolStripMenuItem1.Size = new System.Drawing.Size(212, 22);
             this.shannonFanoAlgorithimToolStripMenuItem1.Text = "Shannon-Fano Algorithim";
+            this.shannonFanoAlgorithimToolStripMenuItem1.Click += new System.EventHandler(this.shannonFanoAlgorithimToolStripMenuItem1_Click);
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tentangPengembangToolStripMenuItem});
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.aboutToolStripMenuItem.Text = "About";
+            // 
+            // tentangPengembangToolStripMenuItem
+            // 
+            this.tentangPengembangToolStripMenuItem.Name = "tentangPengembangToolStripMenuItem";
+            this.tentangPengembangToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.tentangPengembangToolStripMenuItem.Text = "Tentang Pengembang";
             // 
             // frmUtama
             // 
