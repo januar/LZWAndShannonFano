@@ -49,6 +49,9 @@
             this.label5 = new System.Windows.Forms.Label();
             this.txtWktKompresi = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.txtSimpan = new System.Windows.Forms.TextBox();
+            this.btnSimpan = new System.Windows.Forms.Button();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pctImage)).BeginInit();
             this.SuspendLayout();
             // 
@@ -58,7 +61,7 @@
             this.btnOpenFile.Name = "btnOpenFile";
             this.btnOpenFile.Size = new System.Drawing.Size(75, 23);
             this.btnOpenFile.TabIndex = 3;
-            this.btnOpenFile.Text = "Open File";
+            this.btnOpenFile.Text = "Buka File";
             this.btnOpenFile.UseVisualStyleBackColor = true;
             this.btnOpenFile.Click += new System.EventHandler(this.btnOpenFile_Click);
             // 
@@ -82,9 +85,9 @@
             // pctImage
             // 
             this.pctImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pctImage.Location = new System.Drawing.Point(13, 64);
+            this.pctImage.Location = new System.Drawing.Point(13, 97);
             this.pctImage.Name = "pctImage";
-            this.pctImage.Size = new System.Drawing.Size(250, 180);
+            this.pctImage.Size = new System.Drawing.Size(291, 226);
             this.pctImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pctImage.TabIndex = 5;
             this.pctImage.TabStop = false;
@@ -92,7 +95,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(321, 64);
+            this.label1.Location = new System.Drawing.Point(323, 97);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(52, 13);
             this.label1.TabIndex = 6;
@@ -100,14 +103,14 @@
             // 
             // txtFilename
             // 
-            this.txtFilename.Location = new System.Drawing.Point(324, 80);
+            this.txtFilename.Location = new System.Drawing.Point(326, 113);
             this.txtFilename.Name = "txtFilename";
             this.txtFilename.Size = new System.Drawing.Size(253, 20);
             this.txtFilename.TabIndex = 7;
             // 
             // txtFiletype
             // 
-            this.txtFiletype.Location = new System.Drawing.Point(324, 121);
+            this.txtFiletype.Location = new System.Drawing.Point(326, 154);
             this.txtFiletype.Name = "txtFiletype";
             this.txtFiletype.Size = new System.Drawing.Size(253, 20);
             this.txtFiletype.TabIndex = 9;
@@ -115,7 +118,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(321, 105);
+            this.label2.Location = new System.Drawing.Point(323, 138);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 13);
             this.label2.TabIndex = 8;
@@ -123,7 +126,7 @@
             // 
             // txtFilesize
             // 
-            this.txtFilesize.Location = new System.Drawing.Point(324, 162);
+            this.txtFilesize.Location = new System.Drawing.Point(326, 195);
             this.txtFilesize.Name = "txtFilesize";
             this.txtFilesize.Size = new System.Drawing.Size(253, 20);
             this.txtFilesize.TabIndex = 11;
@@ -131,7 +134,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(321, 146);
+            this.label3.Location = new System.Drawing.Point(323, 179);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 13);
             this.label3.TabIndex = 10;
@@ -147,7 +150,7 @@
             // 
             // btnKompres
             // 
-            this.btnKompres.Location = new System.Drawing.Point(502, 299);
+            this.btnKompres.Location = new System.Drawing.Point(502, 345);
             this.btnKompres.Name = "btnKompres";
             this.btnKompres.Size = new System.Drawing.Size(75, 23);
             this.btnKompres.TabIndex = 12;
@@ -157,7 +160,7 @@
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(13, 299);
+            this.progressBar1.Location = new System.Drawing.Point(13, 345);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(468, 23);
             this.progressBar1.TabIndex = 13;
@@ -172,14 +175,14 @@
             // lblInfo
             // 
             this.lblInfo.AutoSize = true;
-            this.lblInfo.Location = new System.Drawing.Point(19, 277);
+            this.lblInfo.Location = new System.Drawing.Point(10, 329);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(0, 13);
             this.lblInfo.TabIndex = 14;
             // 
             // txtKompresiFile
             // 
-            this.txtKompresiFile.Location = new System.Drawing.Point(324, 201);
+            this.txtKompresiFile.Location = new System.Drawing.Point(326, 234);
             this.txtKompresiFile.Name = "txtKompresiFile";
             this.txtKompresiFile.Size = new System.Drawing.Size(253, 20);
             this.txtKompresiFile.TabIndex = 16;
@@ -187,7 +190,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(321, 185);
+            this.label4.Location = new System.Drawing.Point(323, 218);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(68, 13);
             this.label4.TabIndex = 15;
@@ -195,7 +198,7 @@
             // 
             // txtFileSizeKompresi
             // 
-            this.txtFileSizeKompresi.Location = new System.Drawing.Point(324, 238);
+            this.txtFileSizeKompresi.Location = new System.Drawing.Point(326, 271);
             this.txtFileSizeKompresi.Name = "txtFileSizeKompresi";
             this.txtFileSizeKompresi.Size = new System.Drawing.Size(253, 20);
             this.txtFileSizeKompresi.TabIndex = 18;
@@ -203,7 +206,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(321, 222);
+            this.label5.Location = new System.Drawing.Point(323, 255);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(103, 13);
             this.label5.TabIndex = 17;
@@ -211,7 +214,7 @@
             // 
             // txtWktKompresi
             // 
-            this.txtWktKompresi.Location = new System.Drawing.Point(324, 274);
+            this.txtWktKompresi.Location = new System.Drawing.Point(326, 307);
             this.txtWktKompresi.Name = "txtWktKompresi";
             this.txtWktKompresi.Size = new System.Drawing.Size(253, 20);
             this.txtWktKompresi.TabIndex = 20;
@@ -219,16 +222,35 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(321, 258);
+            this.label6.Location = new System.Drawing.Point(323, 291);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(84, 13);
             this.label6.TabIndex = 19;
             this.label6.Text = "Waktu kompresi";
             // 
+            // txtSimpan
+            // 
+            this.txtSimpan.Location = new System.Drawing.Point(94, 60);
+            this.txtSimpan.Name = "txtSimpan";
+            this.txtSimpan.Size = new System.Drawing.Size(483, 20);
+            this.txtSimpan.TabIndex = 22;
+            // 
+            // btnSimpan
+            // 
+            this.btnSimpan.Location = new System.Drawing.Point(13, 57);
+            this.btnSimpan.Name = "btnSimpan";
+            this.btnSimpan.Size = new System.Drawing.Size(75, 23);
+            this.btnSimpan.TabIndex = 21;
+            this.btnSimpan.Text = "Simpan File";
+            this.btnSimpan.UseVisualStyleBackColor = true;
+            this.btnSimpan.Click += new System.EventHandler(this.btnSimpan_Click);
+            // 
             // ucKompresi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.txtSimpan);
+            this.Controls.Add(this.btnSimpan);
             this.Controls.Add(this.txtWktKompresi);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txtFileSizeKompresi);
@@ -249,7 +271,7 @@
             this.Controls.Add(this.btnOpenFile);
             this.Controls.Add(this.lblTitleUC);
             this.Name = "ucKompresi";
-            this.Size = new System.Drawing.Size(600, 330);
+            this.Size = new System.Drawing.Size(600, 380);
             ((System.ComponentModel.ISupportInitialize)(this.pctImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -279,6 +301,9 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtWktKompresi;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtSimpan;
+        private System.Windows.Forms.Button btnSimpan;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
 
 
     }

@@ -49,33 +49,36 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.txtSimpan = new System.Windows.Forms.TextBox();
+            this.btnSimpan = new System.Windows.Forms.Button();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             ((System.ComponentModel.ISupportInitialize)(this.pctImage)).BeginInit();
             this.SuspendLayout();
             // 
             // txtWktKompresi
             // 
-            this.txtWktKompresi.Location = new System.Drawing.Point(331, 274);
+            this.txtWktKompresi.Location = new System.Drawing.Point(323, 305);
             this.txtWktKompresi.Name = "txtWktKompresi";
             this.txtWktKompresi.Size = new System.Drawing.Size(253, 20);
             this.txtWktKompresi.TabIndex = 32;
             // 
             // txtFileSizeKompresi
             // 
-            this.txtFileSizeKompresi.Location = new System.Drawing.Point(331, 238);
+            this.txtFileSizeKompresi.Location = new System.Drawing.Point(323, 269);
             this.txtFileSizeKompresi.Name = "txtFileSizeKompresi";
             this.txtFileSizeKompresi.Size = new System.Drawing.Size(253, 20);
             this.txtFileSizeKompresi.TabIndex = 31;
             // 
             // txtKompresiFile
             // 
-            this.txtKompresiFile.Location = new System.Drawing.Point(331, 201);
+            this.txtKompresiFile.Location = new System.Drawing.Point(323, 232);
             this.txtKompresiFile.Name = "txtKompresiFile";
             this.txtKompresiFile.Size = new System.Drawing.Size(253, 20);
             this.txtKompresiFile.TabIndex = 30;
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(20, 299);
+            this.progressBar1.Location = new System.Drawing.Point(13, 345);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(468, 23);
             this.progressBar1.TabIndex = 29;
@@ -83,7 +86,7 @@
             // 
             // btnDelompres
             // 
-            this.btnDelompres.Location = new System.Drawing.Point(509, 299);
+            this.btnDelompres.Location = new System.Drawing.Point(502, 345);
             this.btnDelompres.Name = "btnDelompres";
             this.btnDelompres.Size = new System.Drawing.Size(75, 23);
             this.btnDelompres.TabIndex = 28;
@@ -93,21 +96,21 @@
             // 
             // txtFilesize
             // 
-            this.txtFilesize.Location = new System.Drawing.Point(331, 162);
+            this.txtFilesize.Location = new System.Drawing.Point(323, 193);
             this.txtFilesize.Name = "txtFilesize";
             this.txtFilesize.Size = new System.Drawing.Size(253, 20);
             this.txtFilesize.TabIndex = 27;
             // 
             // txtFiletype
             // 
-            this.txtFiletype.Location = new System.Drawing.Point(331, 121);
+            this.txtFiletype.Location = new System.Drawing.Point(323, 152);
             this.txtFiletype.Name = "txtFiletype";
             this.txtFiletype.Size = new System.Drawing.Size(253, 20);
             this.txtFiletype.TabIndex = 26;
             // 
             // txtFilename
             // 
-            this.txtFilename.Location = new System.Drawing.Point(331, 80);
+            this.txtFilename.Location = new System.Drawing.Point(323, 111);
             this.txtFilename.Name = "txtFilename";
             this.txtFilename.Size = new System.Drawing.Size(253, 20);
             this.txtFilename.TabIndex = 25;
@@ -115,27 +118,27 @@
             // pctImage
             // 
             this.pctImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pctImage.Location = new System.Drawing.Point(20, 64);
+            this.pctImage.Location = new System.Drawing.Point(13, 97);
             this.pctImage.Name = "pctImage";
-            this.pctImage.Size = new System.Drawing.Size(250, 180);
+            this.pctImage.Size = new System.Drawing.Size(291, 226);
             this.pctImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pctImage.TabIndex = 24;
             this.pctImage.TabStop = false;
             // 
             // txtFile
             // 
-            this.txtFile.Location = new System.Drawing.Point(101, 31);
+            this.txtFile.Location = new System.Drawing.Point(94, 31);
             this.txtFile.Name = "txtFile";
             this.txtFile.Size = new System.Drawing.Size(483, 20);
             this.txtFile.TabIndex = 23;
             // 
             // btnOpenFile
             // 
-            this.btnOpenFile.Location = new System.Drawing.Point(20, 28);
+            this.btnOpenFile.Location = new System.Drawing.Point(13, 28);
             this.btnOpenFile.Name = "btnOpenFile";
             this.btnOpenFile.Size = new System.Drawing.Size(75, 23);
             this.btnOpenFile.TabIndex = 22;
-            this.btnOpenFile.Text = "Open File";
+            this.btnOpenFile.Text = "Buka File";
             this.btnOpenFile.UseVisualStyleBackColor = true;
             this.btnOpenFile.Click += new System.EventHandler(this.btnOpenFile_Click);
             // 
@@ -143,7 +146,7 @@
             // 
             this.lblTitleUC.AutoSize = true;
             this.lblTitleUC.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitleUC.Location = new System.Drawing.Point(17, 9);
+            this.lblTitleUC.Location = new System.Drawing.Point(10, 9);
             this.lblTitleUC.Name = "lblTitleUC";
             this.lblTitleUC.Size = new System.Drawing.Size(163, 13);
             this.lblTitleUC.TabIndex = 21;
@@ -162,7 +165,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(330, 260);
+            this.label6.Location = new System.Drawing.Point(322, 291);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(84, 13);
             this.label6.TabIndex = 39;
@@ -171,7 +174,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(330, 224);
+            this.label5.Location = new System.Drawing.Point(322, 255);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(103, 13);
             this.label5.TabIndex = 38;
@@ -180,7 +183,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(330, 187);
+            this.label4.Location = new System.Drawing.Point(322, 218);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(68, 13);
             this.label4.TabIndex = 37;
@@ -189,7 +192,7 @@
             // lblInfo
             // 
             this.lblInfo.AutoSize = true;
-            this.lblInfo.Location = new System.Drawing.Point(28, 279);
+            this.lblInfo.Location = new System.Drawing.Point(10, 329);
             this.lblInfo.Name = "lblInfo";
             this.lblInfo.Size = new System.Drawing.Size(0, 13);
             this.lblInfo.TabIndex = 36;
@@ -197,7 +200,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(330, 148);
+            this.label3.Location = new System.Drawing.Point(322, 179);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(44, 13);
             this.label3.TabIndex = 35;
@@ -206,7 +209,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(330, 107);
+            this.label2.Location = new System.Drawing.Point(322, 138);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 13);
             this.label2.TabIndex = 34;
@@ -215,16 +218,35 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(330, 66);
+            this.label1.Location = new System.Drawing.Point(322, 97);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(52, 13);
             this.label1.TabIndex = 33;
             this.label1.Text = "File name";
             // 
+            // txtSimpan
+            // 
+            this.txtSimpan.Location = new System.Drawing.Point(94, 60);
+            this.txtSimpan.Name = "txtSimpan";
+            this.txtSimpan.Size = new System.Drawing.Size(483, 20);
+            this.txtSimpan.TabIndex = 41;
+            // 
+            // btnSimpan
+            // 
+            this.btnSimpan.Location = new System.Drawing.Point(13, 57);
+            this.btnSimpan.Name = "btnSimpan";
+            this.btnSimpan.Size = new System.Drawing.Size(75, 23);
+            this.btnSimpan.TabIndex = 40;
+            this.btnSimpan.Text = "Simpan File";
+            this.btnSimpan.UseVisualStyleBackColor = true;
+            this.btnSimpan.Click += new System.EventHandler(this.btnSimpan_Click);
+            // 
             // ucDekompresi
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.txtSimpan);
+            this.Controls.Add(this.btnSimpan);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -245,7 +267,7 @@
             this.Controls.Add(this.btnOpenFile);
             this.Controls.Add(this.lblTitleUC);
             this.Name = "ucDekompresi";
-            this.Size = new System.Drawing.Size(600, 330);
+            this.Size = new System.Drawing.Size(600, 380);
             ((System.ComponentModel.ISupportInitialize)(this.pctImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -275,5 +297,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtSimpan;
+        private System.Windows.Forms.Button btnSimpan;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
     }
 }

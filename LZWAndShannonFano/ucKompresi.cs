@@ -120,6 +120,18 @@ namespace LZWAndShannonFano
                 return;
             }
 
+            if (txtSimpan.Text == "")
+            {
+                MessageBox.Show("Silahkan pilih folder pemnyimpanan file kompresi", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (new DirectoryInfo(txtSimpan.Text).Exists == false)
+            {
+                MessageBox.Show("Folder penyimpanan salah", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             SetTextCallback de = new SetTextCallback(SetText);
             System.Diagnostics.Stopwatch sWatch = new System.Diagnostics.Stopwatch();
             progressBar1.Visible = true;
@@ -144,13 +156,14 @@ namespace LZWAndShannonFano
                         compressFile = txtFilename.Text.Substring(0, txtFilename.Text.Length - 4) + ".lzw";
                         procesedFinished = true;
                         fileSizeConvert = b.Length;
-                        File.WriteAllBytes(Path.GetDirectoryName(openFileDialog1.FileName) + "//" + compressFile, b);
+                        File.WriteAllBytes(txtSimpan.Text + "//" + compressFile, b);
                         
                         sWatch.Stop();
                         this.Invoke(de, new object[] { fileSizeConvert.ToString() + " Bytes", TXT_KOMPRES_SIZE });
                         this.Invoke(de, new object[] { compressFile, TXT_KOMPRES });
                         this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
                         this.Invoke(de, new object[] { "", LBL_INFO });
+                        MessageBox.Show("Success", "Information", MessageBoxButtons.OK);
                     })
                     );
                 LZWThread.Start();
@@ -160,6 +173,15 @@ namespace LZWAndShannonFano
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
 
+        }
+
+        private void btnSimpan_Click(object sender, EventArgs e)
+        {
+            DialogResult path = folderBrowserDialog1.ShowDialog();
+            if (path == DialogResult.OK)
+            {
+                txtSimpan.Text = folderBrowserDialog1.SelectedPath;
+            }
         }
     }
 }

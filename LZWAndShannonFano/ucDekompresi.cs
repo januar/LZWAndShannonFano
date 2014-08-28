@@ -83,7 +83,7 @@ namespace LZWAndShannonFano
             {
                 // Report progress to 'UI' thread
                 double persen = (double)byteProcessed / maxByte * 100;
-                Console.WriteLine(persen + "-" + byteProcessed + "-"+ maxByte);
+                //Console.WriteLine(persen + "-" + byteProcessed + "-"+ maxByte);
                 backgroundWorker1.ReportProgress((int)Math.Ceiling(persen));
             }
             backgroundWorker1.ReportProgress(100);
@@ -122,6 +122,18 @@ namespace LZWAndShannonFano
                 return;
             }
 
+            if (txtSimpan.Text == "")
+            {
+                MessageBox.Show("Silahkan pilih folder pemnyimpanan file dekompresi", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (new DirectoryInfo(txtSimpan.Text).Exists == false)
+            {
+                MessageBox.Show("Folder penyimpanan salah", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             SetTextCallback de = new SetTextCallback(SetText);
             System.Diagnostics.Stopwatch sWatch = new System.Diagnostics.Stopwatch();
             progressBar1.Visible = true;
@@ -137,14 +149,14 @@ namespace LZWAndShannonFano
                     {
                         //this.Invoke(de, new object[] { "Generate ASCI table", LBL_INFO });
                         sWatch.Start();
-                        this.Invoke(de, new object[] { "Start encoding " + txtFilename.Text, LBL_INFO });
+                        this.Invoke(de, new object[] { "Start dencoding " + txtFilename.Text, LBL_INFO });
                         
                         LZWAndShannonFano.LZW.Decoder decoder = new LZW.Decoder();
                         byte[] bo = File.ReadAllBytes(txtFile.Text);
                         string decodedOutput = decoder.Apply(bo, ref maxByte, ref byteProcessed);
-                        compressFile = txtFile.Text.Substring(0, txtFile.Text.Length - 4);
+                        compressFile = txtSimpan.Text +"//"+ txtFilename.Text.Substring(0, txtFilename.Text.Length - 4);
                         File.WriteAllText(compressFile, decodedOutput, System.Text.Encoding.Default);
-                        changeExtension(compressFile);
+                        pctImage.Image = (Bitmap) Bitmap.FromFile(changeExtension(compressFile));
                         procesedFinished = true;
                         
                         sWatch.Stop();
@@ -158,25 +170,40 @@ namespace LZWAndShannonFano
             }
         }
 
-        private void changeExtension(string sourceFile)
+        private String changeExtension(string sourceFile)
         {
             FileInfo infoFile = new FileInfo(sourceFile);
             FileType fileType = infoFile.GetFileType();
+            String fileName = "";
             if (fileType.extension == "jpg")
             {
-                File.Move(sourceFile, Path.ChangeExtension(sourceFile, "jpg"));
+                fileName = Path.ChangeExtension(sourceFile, "jpg");
+                File.Move(sourceFile, fileName);
             }
             else if (fileType.extension == "bmp")
             {
-                File.Move(sourceFile, Path.ChangeExtension(sourceFile, "bmp"));
+                fileName = Path.ChangeExtension(sourceFile, "bmp");
+                File.Move(sourceFile, fileName);
             }
             else if (fileType.extension == "png")
             {
-                File.Move(sourceFile, Path.ChangeExtension(sourceFile, "png"));
+                fileName = Path.ChangeExtension(sourceFile, "png");
+                File.Move(sourceFile, fileName);
             }
             else if (fileType.extension == "gif")
             {
-                File.Move(sourceFile, Path.ChangeExtension(sourceFile, "gif"));
+                fileName = Path.ChangeExtension(sourceFile, "gif");
+                File.Move(sourceFile, fileName);
+            }
+            return fileName;
+        }
+
+        private void btnSimpan_Click(object sender, EventArgs e)
+        {
+            DialogResult path = folderBrowserDialog1.ShowDialog();
+            if (path == DialogResult.OK)
+            {
+                txtSimpan.Text = folderBrowserDialog1.SelectedPath;
             }
         }
     }
