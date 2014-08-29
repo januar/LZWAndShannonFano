@@ -15,6 +15,9 @@ namespace LZWAndShannonFano
         public frmUtama()
         {
             InitializeComponent();
+
+            ShannonFano.Encoder sf = new ShannonFano.Encoder();
+            sf.Encoding((Bitmap)Bitmap.FromFile("123.jpg"));
         }
 
         private void Kompresi(bool LZW)

@@ -157,7 +157,7 @@ namespace LZWAndShannonFano
                         procesedFinished = true;
                         fileSizeConvert = b.Length;
                         File.WriteAllBytes(txtSimpan.Text + "//" + compressFile, b);
-                        
+
                         sWatch.Stop();
                         this.Invoke(de, new object[] { fileSizeConvert.ToString() + " Bytes", TXT_KOMPRES_SIZE });
                         this.Invoke(de, new object[] { compressFile, TXT_KOMPRES });
@@ -167,6 +167,9 @@ namespace LZWAndShannonFano
                     })
                     );
                 LZWThread.Start();
+            }
+            else {
+
             }
         }
 
