@@ -50,7 +50,7 @@ namespace LZWAndShannonFano
         {
             if (LZW)
             {
-                //openFileDialog1.Filter = "LZW Files (*.lzw) |*.lzw";
+                openFileDialog1.Filter = "LZW Files (*.lzw) |*.lzw";
             }
             else
             {
@@ -136,14 +136,14 @@ namespace LZWAndShannonFano
 
             SetTextCallback de = new SetTextCallback(SetText);
             System.Diagnostics.Stopwatch sWatch = new System.Diagnostics.Stopwatch();
-            progressBar1.Visible = true;
-            string text = File.ReadAllText(txtFile.Text, System.Text.ASCIIEncoding.Default);
-            maxByte = text.Length;
-            procesedFinished = false;
-            backgroundWorker1.RunWorkerAsync();
 
             if (LZW)
             {
+                progressBar1.Visible = true;
+                string text = File.ReadAllText(txtFile.Text, System.Text.ASCIIEncoding.Default);
+                maxByte = text.Length;
+                procesedFinished = false;
+                backgroundWorker1.RunWorkerAsync();
                 Thread LZWThread = new Thread(
                     new ThreadStart(() =>
                     {
@@ -164,9 +164,63 @@ namespace LZWAndShannonFano
                         //this.Invoke(de, new object[] { compressFile, TXT_KOMPRES });
                         //this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
                         this.Invoke(de, new object[] { "", LBL_INFO });
+                        MessageBox.Show("Success", "Information", MessageBoxButtons.OK);
                     })
                     );
                 LZWThread.Start();
+            }
+            else
+            {
+                string resultPath = txtSimpan.Text;
+                string sfcFile = openFileDialog1.FileName.Substring(0, openFileDialog1.FileName.Length - 3);
+                if (!File.Exists(sfcFile + ".sfc"))
+                {
+                    MessageBox.Show("File SF Code tidak ditemukan", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                Thread SFThread = new Thread(
+                    new ThreadStart(() =>
+                    {
+                        sWatch.Start();
+
+                        FileInfo info = new FileInfo(openFileDialog1.FileName);
+                        compressFile = info.Name.Substring(0, info.Name.Length - 4);
+                        ShannonFano.Decoder decoder = new ShannonFano.Decoder();
+                        String sfc = File.ReadAllText(sfcFile + ".sfc");
+                        decoder.SetSFCode(sfc);
+
+                        StreamReader sr = new StreamReader(openFileDialog1.FileName);
+                        int fileType = Int32.Parse(sr.ReadLine());
+                        int width = Int32.Parse(sr.ReadLine());
+                        int height = Int32.Parse(sr.ReadLine());
+
+                        Bitmap decImage = decoder.Decoding(sr.ReadLine(), width, height);
+                        if (fileType == ShannonFano.SFCode.BMP)
+                        {
+                            decImage.Save(resultPath + "\\" + compressFile + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                        }
+                        else if (fileType == ShannonFano.SFCode.JPG)
+                        {
+                            decImage.Save(resultPath + "\\" + compressFile + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                        }
+                        else if (fileType == ShannonFano.SFCode.GIF)
+                        {
+                            decImage.Save(resultPath + "\\" + compressFile + ".gif", System.Drawing.Imaging.ImageFormat.Gif);
+                        }
+                        else if (fileType == ShannonFano.SFCode.PNG)
+                        {
+                            decImage.Save(resultPath + "\\" + compressFile + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                        }
+
+                        sWatch.Stop();
+
+                        //this.Invoke(de, new object[] { info.Length + " Bytes", TXT_KOMPRES_SIZE });
+                        //this.Invoke(de, new object[] { compressFile + ".sf", TXT_KOMPRES });
+                        this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
+                        this.Invoke(de, new object[] { "", LBL_INFO });
+                        MessageBox.Show("Success", "Information", MessageBoxButtons.OK);
+                    }));
+                SFThread.Start();
             }
         }
 

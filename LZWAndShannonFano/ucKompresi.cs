@@ -179,13 +179,14 @@ namespace LZWAndShannonFano
                         Bitmap image = (Bitmap)Bitmap.FromFile(openFileDialog1.FileName);
                         FileInfo info = new FileInfo(openFileDialog1.FileName);
                         string imageType = checkImageType(info);
+                        string resultPath = txtSimpan.Text;
 
                         String encodingCode = encoder.Encoding(image);
-                        encodingCode = "1\n" + image.Width + "\n" + image.Height + "\n" + encodingCode;
+                        encodingCode =  imageType + "\n" + image.Width + "\n" + image.Height + "\n" + encodingCode;
 
                         compressFile = info.Name.Substring(0, info.Name.Length - 4);
-                        File.WriteAllText(compressFile + ".sf", encodingCode);
-                        File.WriteAllText(compressFile + ".sfc", encoder.GetSFCode());
+                        File.WriteAllText(resultPath +"\\"+ compressFile + ".sf", encodingCode);
+                        File.WriteAllText(resultPath + "\\" + compressFile + ".sfc", encoder.GetSFCode());
 
                         sWatch.Stop();
 
