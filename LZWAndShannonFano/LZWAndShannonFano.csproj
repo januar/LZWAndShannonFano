@@ -61,6 +61,7 @@
     <Compile Include="LZW\ExtensionMethods.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShannonFano\Decoder.cs" />
     <Compile Include="ShannonFano\Encoder.cs" />
     <Compile Include="ShannonFano\SFCode.cs" />
     <Compile Include="ucDekompresi.cs">

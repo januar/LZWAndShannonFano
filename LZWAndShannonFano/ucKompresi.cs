@@ -134,13 +134,13 @@ namespace LZWAndShannonFano
 
             SetTextCallback de = new SetTextCallback(SetText);
             System.Diagnostics.Stopwatch sWatch = new System.Diagnostics.Stopwatch();
-            progressBar1.Visible = true;
-            string text = File.ReadAllText(txtFile.Text, System.Text.ASCIIEncoding.Default);
-            maxByte = text.Length;
-            procesedFinished = false;
-            backgroundWorker1.RunWorkerAsync();
             if (LZW)
             {
+                progressBar1.Visible = true;
+                string text = File.ReadAllText(txtFile.Text, System.Text.ASCIIEncoding.Default);
+                maxByte = text.Length;
+                procesedFinished = false;
+                backgroundWorker1.RunWorkerAsync();
                 Thread LZWThread = new Thread(
                     new ThreadStart(() =>
                     {
@@ -170,6 +170,56 @@ namespace LZWAndShannonFano
             }
             else {
 
+                Thread SFThread = new Thread(
+                    new ThreadStart(() =>
+                    {
+                        sWatch.Start();
+
+                        ShannonFano.Encoder encoder = new ShannonFano.Encoder();
+                        Bitmap image = (Bitmap)Bitmap.FromFile(openFileDialog1.FileName);
+                        FileInfo info = new FileInfo(openFileDialog1.FileName);
+                        string imageType = checkImageType(info);
+
+                        String encodingCode = encoder.Encoding(image);
+                        encodingCode = "1\n" + image.Width + "\n" + image.Height + "\n" + encodingCode;
+
+                        compressFile = info.Name.Substring(0, info.Name.Length - 4);
+                        File.WriteAllText(compressFile + ".sf", encodingCode);
+                        File.WriteAllText(compressFile + ".sfc", encoder.GetSFCode());
+
+                        sWatch.Stop();
+
+                        this.Invoke(de, new object[] { info.Length + " Bytes", TXT_KOMPRES_SIZE });
+                        this.Invoke(de, new object[] { compressFile + ".sf", TXT_KOMPRES });
+                        this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
+                        this.Invoke(de, new object[] { "", LBL_INFO });
+                        MessageBox.Show("Success", "Information", MessageBoxButtons.OK);
+                    }));
+                SFThread.Start();
+            }
+        }
+
+        private string checkImageType(FileInfo info)
+        {
+            FileType fileType = info.GetFileType();
+            if (fileType.extension == "jpg")
+            {
+                return ShannonFano.SFCode.JPG.ToString();
+            }
+            else if (fileType.extension == "bmp")
+            {
+                return ShannonFano.SFCode.BMP.ToString();
+            }
+            else if (fileType.extension == "png")
+            {
+                return ShannonFano.SFCode.PNG.ToString();
+            }
+            else if (fileType.extension == "gif")
+            {
+                return ShannonFano.SFCode.GIF.ToString();
+            }
+            else {
+                return ShannonFano.SFCode.TIFF.ToString();
             }
         }
 
