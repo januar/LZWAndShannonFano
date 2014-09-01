@@ -156,7 +156,7 @@ namespace LZWAndShannonFano
                         compressFile = txtFilename.Text.Substring(0, txtFilename.Text.Length - 4) + ".lzw";
                         procesedFinished = true;
                         fileSizeConvert = b.Length;
-                        File.WriteAllBytes(txtSimpan.Text + "//" + compressFile, b);
+                        File.WriteAllBytes(txtSimpan.Text + "\\" + compressFile, b);
 
                         sWatch.Stop();
                         this.Invoke(de, new object[] { fileSizeConvert.ToString() + " Bytes", TXT_KOMPRES_SIZE });

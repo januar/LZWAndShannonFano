@@ -149,12 +149,13 @@ namespace LZWAndShannonFano
                     {
                         //this.Invoke(de, new object[] { "Generate ASCI table", LBL_INFO });
                         sWatch.Start();
-                        this.Invoke(de, new object[] { "Start dencoding " + txtFilename.Text, LBL_INFO });
-                        
+                        FileInfo fileInfo = new FileInfo(openFileDialog1.FileName);
+                        this.Invoke(de, new object[] { "Start dencoding " + fileInfo.Name, LBL_INFO });
+
+                        compressFile = txtSimpan.Text + "\\" + fileInfo.Name.Substring(0, fileInfo.Name.Length - 4);
                         LZWAndShannonFano.LZW.Decoder decoder = new LZW.Decoder();
                         byte[] bo = File.ReadAllBytes(txtFile.Text);
                         string decodedOutput = decoder.Apply(bo, ref maxByte, ref byteProcessed);
-                        compressFile = txtSimpan.Text +"//"+ txtFilename.Text.Substring(0, txtFilename.Text.Length - 4);
                         File.WriteAllText(compressFile, decodedOutput, System.Text.Encoding.Default);
                         pctImage.Image = (Bitmap) Bitmap.FromFile(changeExtension(compressFile));
                         procesedFinished = true;
@@ -163,7 +164,7 @@ namespace LZWAndShannonFano
                         //this.Invoke(de, new object[] { fileSizeConvert.ToString() + " Bytes", TXT_KOMPRES_SIZE });
                         //this.Invoke(de, new object[] { compressFile, TXT_KOMPRES });
                         //this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
-                        this.Invoke(de, new object[] { "", LBL_INFO });
+                        //this.Invoke(de, new object[] { "", LBL_INFO });
                         MessageBox.Show("Success", "Information", MessageBoxButtons.OK);
                     })
                     );
