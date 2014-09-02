@@ -218,49 +218,22 @@ namespace LZWAndShannonFano
                         FileInfo fileInfo = new FileInfo(openFileDialog1.FileName);
                         this.Invoke(de, new object[] { "Start dencoding " + fileInfo.Name, LBL_INFO });
 
-                        compressFile = fileInfo.Name.Substring(0, fileInfo.Name.Length - 4);
+                        compressFile = txtSimpan.Text + "\\" + fileInfo.Name.Substring(0, fileInfo.Name.Length - 3);
                         ShannonFano.Decoder decoder = new ShannonFano.Decoder();
                         String sfc = File.ReadAllText(sfcFile + ".sfc");
                         decoder.SetSFCode(sfc);
 
-                        byte[] encodingByte = File.ReadAllBytes(openFileDialog1.FileName);
-                        int fileType = Convert.ToInt32(encodingByte[0]);
-                        int width = 0;
-                        int height = 0;
-                        int widthLeng = Convert.ToInt32(encodingByte[1]);
-                        int heightLeng = Convert.ToInt32(encodingByte[2]);
-                        decoder.getResolution(ref width, ref height, widthLeng, heightLeng, encodingByte);
-                        byte[] decodingByte = new byte[encodingByte.Length - (3 + widthLeng + heightLeng)];
-                        Array.Copy(encodingByte, 3 + widthLeng + heightLeng, decodingByte, 0, decodingByte.Length);
+                        byte[] decodingByte = File.ReadAllBytes(openFileDialog1.FileName);
+                        byte[] decImage = decoder.Decoding(decodingByte.GetBinaryString(), ref byteProcessed);
 
-                        File.WriteAllBytes("test.sf", decodingByte);
-                        Bitmap decImage = decoder.Decoding(decodingByte.GetBinaryString(), width, height, ref byteProcessed);
-                        String type = "";
-                        if (fileType == ShannonFano.SFCode.BMP)
-                        {
-                            decImage.Save(resultPath + "\\" + compressFile + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
-                            type = resultPath + "\\" + compressFile + ".bmp";
-                        }
-                        else if (fileType == ShannonFano.SFCode.JPG)
-                        {
-                            decImage.Save(resultPath + "\\" + compressFile + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
-                            type = resultPath + "\\" + compressFile + ".jpg";
-                        }
-                        else if (fileType == ShannonFano.SFCode.GIF)
-                        {
-                            decImage.Save(resultPath + "\\" + compressFile + ".gif", System.Drawing.Imaging.ImageFormat.Gif);
-                            type = resultPath + "\\" + compressFile + ".gif";
-                        }
-                        else if (fileType == ShannonFano.SFCode.PNG)
-                        {
-                            decImage.Save(resultPath + "\\" + compressFile + ".png", System.Drawing.Imaging.ImageFormat.Png);
-                            type = resultPath + "\\" + compressFile + ".png";
-                        }
+                        File.WriteAllBytes(compressFile, decImage);
+                        String resultFile = changeExtension(compressFile);
 
-                        pctImage.Image = decImage;
+
+                        pctImage.Image = (Bitmap)Bitmap.FromFile(resultFile); ;
                         sWatch.Stop();
                         procesedFinished = true;
-                        fileInfo = new FileInfo(type);
+                        fileInfo = new FileInfo(resultFile);
                         this.Invoke(de, new object[] { fileInfo.Length + " Bytes", TXT_FILE_SIZE });
                         this.Invoke(de, new object[] { fileInfo.Name, TXT_FILE_NAME });
                         this.Invoke(de, new object[] { fileInfo.Extension, TXT_FILE_TYPE });

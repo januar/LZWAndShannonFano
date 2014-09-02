@@ -17,29 +17,6 @@ namespace LZWAndShannonFano
         public frmUtama()
         {
             InitializeComponent();
-
-            //StreamReader sr = new StreamReader("F:\\project\\Samuel Tarigan\\App\\200x200.sf");
-            //sr.ReadLine(); sr.ReadLine(); sr.ReadLine();
-            //String binary = sr.ReadLine();
-            //byte[] binaryByte = binary.ToByteArray();
-            ////File.WriteAllBytes("test_byte.sf", binaryByte);
-
-            ////byte[] bit = File.ReadAllBytes("test_byte.sf");
-            ////String bitBinary = bit.GetBinaryString();
-            ////File.WriteAllText("test_string.sf", bitBinary);
-
-            //String test = File.ReadAllText("test_string.sf");
-            //byte[] encodingCode = test.ToByteArray();
-            //byte[] width = BitConverter.GetBytes(200);
-            //byte[] height = BitConverter.GetBytes(200);
-            //byte[] resultEncoding = new byte[encodingCode.Length + width.Length + height.Length + 3];
-            //resultEncoding[0] = Convert.ToByte(1);
-            //resultEncoding[1] = Convert.ToByte(width.Length);
-            //resultEncoding[2] = Convert.ToByte(height.Length);
-            //width.CopyTo(resultEncoding, 3);
-            //height.CopyTo(resultEncoding, 3 + width.Length);
-            //encodingCode.CopyTo(resultEncoding, 3 + width.Length + height.Length);
-            //File.WriteAllBytes("test_byte2.sf", resultEncoding);
         }
 
         private void Kompresi(bool LZW)

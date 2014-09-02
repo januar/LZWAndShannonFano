@@ -15,60 +15,27 @@ namespace LZWAndShannonFano.ShannonFano
             SFCode = new List<SFCode>();
         }
 
-        public void CovertPixel(Bitmap image, ref int persen)
+        public void CovertPixel(byte[] image, ref int persen)
         {
-            for (int i = 0; i < image.Height; i++)
+            for (int i = 0; i < image.Length; i++)
             {
-                persen = (int) Math.Ceiling(((double)i/image.Height * 100) * 0.3);
-                for (int j = 0; j < image.Width; j++)
+                persen = (int)Math.Ceiling(((double)i / image.Length * 100) * 0.3);
+                var item = (from s in SFCode
+                            where s.Simbol == image[i]
+                            select s).FirstOrDefault();
+                if (item == null)
                 {
-                    //red color
-                    var red = (from s in SFCode
-                               where s.Simbol == image.GetPixel(j, i).R
-                               select s).FirstOrDefault();
-
-                    if (red == null)
-                    {
-                        SFCode.Add(new SFCode { Simbol = image.GetPixel(j, i).R, Frekuensi = 1, Code = "" });
-                    }
-                    else
-                    {
-                        red.Frekuensi++;
-                    }
-
-                    //green color
-                    var green = (from s in SFCode
-                                 where s.Simbol == image.GetPixel(j, i).G
-                                 select s).FirstOrDefault();
-
-                    if (green == null)
-                    {
-                        SFCode.Add(new SFCode { Simbol = image.GetPixel(j, i).G, Frekuensi = 1, Code = "" });
-                    }
-                    else
-                    {
-                        green.Frekuensi++;
-                    }
-
-                    //blue color
-                    var blue = (from s in SFCode
-                                where s.Simbol == image.GetPixel(j, i).B
-                                select s).FirstOrDefault();
-
-                    if (blue == null)
-                    {
-                        SFCode.Add(new SFCode { Simbol = image.GetPixel(j, i).B, Frekuensi = 1, Code = "" });
-                    }
-                    else
-                    {
-                        blue.Frekuensi++;
-                    }
+                    SFCode.Add(new SFCode { Simbol = image[i], Frekuensi = 1, Code = "" });
+                }
+                else
+                {
+                    item.Frekuensi++;
                 }
             }
             SFCode = SFCode.OrderByDescending(s => s.Frekuensi).ToList();
         }
 
-        public String Encoding(Bitmap image, ref int persen)
+        public String Encoding(byte[] image, ref int persen)
         {
             this.CovertPixel(image, ref persen);
             Console.WriteLine("Convert Pixel = " + persen);
@@ -77,33 +44,16 @@ namespace LZWAndShannonFano.ShannonFano
             Console.WriteLine("ShannonFanoCode = " + persen);
 
             String bit = "";
-            for (int i = 0; i < image.Height; i++)
+            for (int i = 0; i < image.Length; i++)
             {
-                int persen2 = (int)Math.Ceiling(((double)i / image.Height * 100) * 0.4);
+                int persen2 = (int)Math.Ceiling(((double)i / image.Length * 100) * 0.4);
                 persen = persen2 + temp;
-                Console.WriteLine("persen2 = " + persen2 + " persen = " + persen);
-                for (int j = 0; j < image.Width; j++)
-                {
-                    //red
-                    var encod = (from s in SFCode
-                                 where s.Simbol == image.GetPixel(j, i).R
-                                 select s.Code).FirstOrDefault();
-                    bit += encod;
-
-                    //green
-                    encod = (from s in SFCode
-                             where s.Simbol == image.GetPixel(j, i).G
+                var encod = (from s in SFCode
+                             where s.Simbol == image[i]
                              select s.Code).FirstOrDefault();
-                    bit += encod;
-
-                    //blue
-                    encod = (from s in SFCode
-                             where s.Simbol == image.GetPixel(j, i).B
-                             select s.Code).FirstOrDefault();
-                    bit += encod;
-                    //Console.WriteLine(i + "-" + j);
-                }
+                bit += encod;
             }
+
             persen = 100;
             return bit;
         }

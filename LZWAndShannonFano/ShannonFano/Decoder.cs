@@ -34,11 +34,11 @@ namespace LZWAndShannonFano.ShannonFano
             }
         }
 
-        public Bitmap Decoding(String code, int width, int height, ref int persen)
+        public byte[] Decoding(String code, ref int persen)
         {
-            Bitmap image = new Bitmap(width, height);
             int i = 0;
             int j = 1;
+            tempImage = new List<byte>();
             while (i < code.Length)
             {
                 try
@@ -66,17 +66,7 @@ namespace LZWAndShannonFano.ShannonFano
                     j = 1;
                 }
             }
-
-            int temp = 0;
-            for (int y = 0; y < image.Height; y++)
-            {
-                for (int x = 0; x < image.Width; x++)
-                {
-                    image.SetPixel(x, y, Color.FromArgb(tempImage[temp], tempImage[temp + 1], tempImage[temp + 2]));
-                    temp += 3;
-                }
-            }
-            return image;
+            return tempImage.ToArray();
         }
 
         public void getResolution(ref int width, ref int height, int widthLeng, int heightLeng, byte[] encodingByte)

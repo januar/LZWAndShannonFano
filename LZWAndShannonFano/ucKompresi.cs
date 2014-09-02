@@ -183,27 +183,16 @@ namespace LZWAndShannonFano
                         sWatch.Start();
 
                         ShannonFano.Encoder encoder = new ShannonFano.Encoder();
-                        Bitmap image = (Bitmap)Bitmap.FromFile(openFileDialog1.FileName);
+                        byte[] image = File.ReadAllBytes(openFileDialog1.FileName);
                         FileInfo info = new FileInfo(openFileDialog1.FileName);
                         //string imageType = checkImageType(info);
                         string resultPath = txtSimpan.Text;
 
                         String encodingString = encoder.Encoding(image, ref byteProcessed);
                         byte[] encodingCode = encodingString.ToByteArray();
-                        byte[] width = BitConverter.GetBytes(image.Width);
-                        byte[] height = BitConverter.GetBytes(image.Height);
-                        byte[] resultEncoding = new byte[encodingCode.Length + width.Length + height.Length + 3];
-                        resultEncoding[0] = Convert.ToByte(checkImageType(info));
-                        resultEncoding[1] = Convert.ToByte(width.Length);
-                        resultEncoding[2] = Convert.ToByte(height.Length);
-                        width.CopyTo(resultEncoding, 3);
-                        height.CopyTo(resultEncoding, 3 + width.Length);
-                        encodingCode.CopyTo(resultEncoding, 3 + width.Length + height.Length);
-
-                        //encodingString =  imageType + "\n" + image.Width + "\n" + image.Height + "\n" + encodingString;
-
+                
                         compressFile = info.Name.Substring(0, info.Name.Length - 4);
-                        File.WriteAllBytes(resultPath + "\\" + compressFile + ".sf", resultEncoding);
+                        File.WriteAllBytes(resultPath + "\\" + compressFile + ".sf", encodingCode);
                         File.WriteAllText(resultPath + "\\" + compressFile + ".sfc", encoder.GetSFCode());
 
                         sWatch.Stop();
