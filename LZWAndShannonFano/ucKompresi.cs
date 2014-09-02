@@ -61,14 +61,11 @@ namespace LZWAndShannonFano
             txtFilename.Text = fileinfo.Name;
             txtFiletype.Text = fileinfo.Extension;
             txtFilesize.Text = fileinfo.Length.ToString() + " Bytes";
-
-            maxByte = 0;
-            byteProcessed = 0;
-            progressBar1.Value = 0;
             txtFileSizeKompresi.Text = "";
             txtKompresiFile.Text = "";
             txtWktKompresi.Text = "";
             lblInfo.Text = "";
+            progressBar1.Value = 0;
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -137,6 +134,9 @@ namespace LZWAndShannonFano
                 return;
             }
 
+            maxByte = 0;
+            byteProcessed = 0;
+            progressBar1.Value = 0;
             SetTextCallback de = new SetTextCallback(SetText);
             System.Diagnostics.Stopwatch sWatch = new System.Diagnostics.Stopwatch();
             progressBar1.Visible = true;

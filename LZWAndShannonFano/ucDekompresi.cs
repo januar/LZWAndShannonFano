@@ -29,6 +29,9 @@ namespace LZWAndShannonFano
         public const int TXT_KOMPRES = 2;
         public const int TXT_KOMPRES_SIZE = 3;
         public const int TXT_KOMPRES_TIME = 4;
+        public const int TXT_FILE_NAME = 5;
+        public const int TXT_FILE_TYPE = 6;
+        public const int TXT_FILE_SIZE = 7;
 
         public ucDekompresi(bool lzw)
         {
@@ -79,14 +82,22 @@ namespace LZWAndShannonFano
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             //Your background task goes here
-            while (procesedFinished == false)
+            if (LZW)
             {
-                // Report progress to 'UI' thread
-                double persen = (double)byteProcessed / maxByte * 100;
-                //Console.WriteLine(persen + "-" + byteProcessed + "-"+ maxByte);
-                backgroundWorker1.ReportProgress((int)Math.Ceiling(persen));
+                while (procesedFinished == false)
+                {
+                    double persen = (double)byteProcessed / maxByte * 100;
+                    backgroundWorker1.ReportProgress((int)Math.Ceiling(persen));
+                }
+                backgroundWorker1.ReportProgress(100);
             }
-            backgroundWorker1.ReportProgress(100);
+            else 
+            {
+                while (procesedFinished == false)
+                {
+                    backgroundWorker1.ReportProgress(byteProcessed);
+                }
+            }
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -112,6 +123,18 @@ namespace LZWAndShannonFano
             {
                 txtWktKompresi.Text = text;
             }
+            else if (type == TXT_FILE_NAME)
+            {
+                txtFilename.Text = text;
+            }
+            else if (type == TXT_FILE_SIZE)
+            {
+                txtFilesize.Text = text;
+            }
+            else if (type == TXT_FILE_TYPE)
+            {
+                txtFiletype.Text = text;
+            }
         }
 
         private void btnDelompres_Click(object sender, EventArgs e)
@@ -136,13 +159,16 @@ namespace LZWAndShannonFano
 
             SetTextCallback de = new SetTextCallback(SetText);
             System.Diagnostics.Stopwatch sWatch = new System.Diagnostics.Stopwatch();
-
+            progressBar1.Visible = true;
+            procesedFinished = false;
+            maxByte = 0;
+            byteProcessed = 0;
+            progressBar1.Value = 0;
             if (LZW)
             {
-                progressBar1.Visible = true;
+                
                 string text = File.ReadAllText(txtFile.Text, System.Text.ASCIIEncoding.Default);
                 maxByte = text.Length;
-                procesedFinished = false;
                 backgroundWorker1.RunWorkerAsync();
                 Thread LZWThread = new Thread(
                     new ThreadStart(() =>
@@ -157,14 +183,17 @@ namespace LZWAndShannonFano
                         byte[] bo = File.ReadAllBytes(txtFile.Text);
                         string decodedOutput = decoder.Apply(bo, ref maxByte, ref byteProcessed);
                         File.WriteAllText(compressFile, decodedOutput, System.Text.Encoding.Default);
-                        pctImage.Image = (Bitmap) Bitmap.FromFile(changeExtension(compressFile));
+                        String resultFile = changeExtension(compressFile);
+                        pctImage.Image = (Bitmap) Bitmap.FromFile(resultFile);
                         procesedFinished = true;
                         
                         sWatch.Stop();
-                        //this.Invoke(de, new object[] { fileSizeConvert.ToString() + " Bytes", TXT_KOMPRES_SIZE });
-                        //this.Invoke(de, new object[] { compressFile, TXT_KOMPRES });
-                        //this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
-                        //this.Invoke(de, new object[] { "", LBL_INFO });
+                        fileInfo = new FileInfo(resultFile);
+                        this.Invoke(de, new object[] { fileInfo.Length + " Bytes", TXT_FILE_SIZE });
+                        this.Invoke(de, new object[] { fileInfo.Name, TXT_FILE_NAME });
+                        this.Invoke(de, new object[] { fileInfo.Extension, TXT_FILE_TYPE });
+                        this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
+                        this.Invoke(de, new object[] { "", LBL_INFO });
                         MessageBox.Show("Success", "Information", MessageBoxButtons.OK);
                     })
                     );
@@ -179,13 +208,16 @@ namespace LZWAndShannonFano
                     MessageBox.Show("File SF Code tidak ditemukan", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+                backgroundWorker1.RunWorkerAsync();
                 Thread SFThread = new Thread(
                     new ThreadStart(() =>
                     {
                         sWatch.Start();
 
-                        FileInfo info = new FileInfo(openFileDialog1.FileName);
-                        compressFile = info.Name.Substring(0, info.Name.Length - 4);
+                        FileInfo fileInfo = new FileInfo(openFileDialog1.FileName);
+                        this.Invoke(de, new object[] { "Start dencoding " + fileInfo.Name, LBL_INFO });
+
+                        compressFile = fileInfo.Name.Substring(0, fileInfo.Name.Length - 4);
                         ShannonFano.Decoder decoder = new ShannonFano.Decoder();
                         String sfc = File.ReadAllText(sfcFile + ".sfc");
                         decoder.SetSFCode(sfc);
@@ -195,28 +227,36 @@ namespace LZWAndShannonFano
                         int width = Int32.Parse(sr.ReadLine());
                         int height = Int32.Parse(sr.ReadLine());
 
-                        Bitmap decImage = decoder.Decoding(sr.ReadLine(), width, height);
+                        Bitmap decImage = decoder.Decoding(sr.ReadLine(), width, height, ref byteProcessed);
+                        String type = "";
                         if (fileType == ShannonFano.SFCode.BMP)
                         {
                             decImage.Save(resultPath + "\\" + compressFile + ".bmp", System.Drawing.Imaging.ImageFormat.Bmp);
+                            type = resultPath + "\\" + compressFile + ".bmp";
                         }
                         else if (fileType == ShannonFano.SFCode.JPG)
                         {
                             decImage.Save(resultPath + "\\" + compressFile + ".jpg", System.Drawing.Imaging.ImageFormat.Jpeg);
+                            type = resultPath + "\\" + compressFile + ".jpg";
                         }
                         else if (fileType == ShannonFano.SFCode.GIF)
                         {
                             decImage.Save(resultPath + "\\" + compressFile + ".gif", System.Drawing.Imaging.ImageFormat.Gif);
+                            type = resultPath + "\\" + compressFile + ".gif";
                         }
                         else if (fileType == ShannonFano.SFCode.PNG)
                         {
                             decImage.Save(resultPath + "\\" + compressFile + ".png", System.Drawing.Imaging.ImageFormat.Png);
+                            type = resultPath + "\\" + compressFile + ".png";
                         }
 
+                        pctImage.Image = decImage;
                         sWatch.Stop();
-
-                        //this.Invoke(de, new object[] { info.Length + " Bytes", TXT_KOMPRES_SIZE });
-                        //this.Invoke(de, new object[] { compressFile + ".sf", TXT_KOMPRES });
+                        procesedFinished = true;
+                        fileInfo = new FileInfo(type);
+                        this.Invoke(de, new object[] { fileInfo.Length + " Bytes", TXT_FILE_SIZE });
+                        this.Invoke(de, new object[] { fileInfo.Name, TXT_FILE_NAME });
+                        this.Invoke(de, new object[] { fileInfo.Extension, TXT_FILE_TYPE });
                         this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
                         this.Invoke(de, new object[] { "", LBL_INFO });
                         MessageBox.Show("Success", "Information", MessageBoxButtons.OK);
@@ -233,24 +273,34 @@ namespace LZWAndShannonFano
             if (fileType.extension == "jpg")
             {
                 fileName = Path.ChangeExtension(sourceFile, "jpg");
+                checkFileExist(fileName);
                 File.Move(sourceFile, fileName);
             }
             else if (fileType.extension == "bmp")
             {
                 fileName = Path.ChangeExtension(sourceFile, "bmp");
+                checkFileExist(fileName);
                 File.Move(sourceFile, fileName);
             }
             else if (fileType.extension == "png")
             {
                 fileName = Path.ChangeExtension(sourceFile, "png");
+                checkFileExist(fileName);
                 File.Move(sourceFile, fileName);
             }
             else if (fileType.extension == "gif")
             {
                 fileName = Path.ChangeExtension(sourceFile, "gif");
+                checkFileExist(fileName);
                 File.Move(sourceFile, fileName);
             }
             return fileName;
+        }
+
+        private void checkFileExist(string fileName)
+        {
+            if (File.Exists(fileName))
+                File.Delete(fileName);
         }
 
         private void btnSimpan_Click(object sender, EventArgs e)

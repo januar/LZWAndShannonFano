@@ -71,14 +71,17 @@ namespace LZWAndShannonFano.ShannonFano
         public String Encoding(Bitmap image, ref int persen)
         {
             this.CovertPixel(image, ref persen);
+            Console.WriteLine("Convert Pixel = " + persen);
             ShannonFanoCode();
-            persen += 30;
+            int temp = persen += 30;
+            Console.WriteLine("ShannonFanoCode = " + persen);
 
             String bit = "";
             for (int i = 0; i < image.Height; i++)
             {
                 int persen2 = (int)Math.Ceiling(((double)i / image.Height * 100) * 0.4);
-                persen += persen2;
+                persen = persen2 + temp;
+                Console.WriteLine("persen2 = " + persen2 + " persen = " + persen);
                 for (int j = 0; j < image.Width; j++)
                 {
                     //red

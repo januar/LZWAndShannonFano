@@ -34,13 +34,14 @@ namespace LZWAndShannonFano.ShannonFano
             }
         }
 
-        public Bitmap Decoding(String code, int width, int height)
+        public Bitmap Decoding(String code, int width, int height, ref int persen)
         {
             Bitmap image = new Bitmap(width, height);
             int i = 0;
             int j = 1;
             while (i < code.Length)
             {
+                persen = (int)Math.Ceiling((double)i / code.Length * 100);
                 String binary = "";
                 binary = code.Substring(i, j);
                 var sfitem = (from sf in SFCode
