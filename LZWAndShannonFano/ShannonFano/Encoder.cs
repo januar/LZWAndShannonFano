@@ -15,10 +15,11 @@ namespace LZWAndShannonFano.ShannonFano
             SFCode = new List<SFCode>();
         }
 
-        public void CovertPixel(Bitmap image)
+        public void CovertPixel(Bitmap image, ref int persen)
         {
             for (int i = 0; i < image.Height; i++)
             {
+                persen = (int) Math.Ceiling(((double)i/image.Height * 100) * 0.3);
                 for (int j = 0; j < image.Width; j++)
                 {
                     //red color
@@ -67,14 +68,17 @@ namespace LZWAndShannonFano.ShannonFano
             SFCode = SFCode.OrderByDescending(s => s.Frekuensi).ToList();
         }
 
-        public String Encoding(Bitmap image)
+        public String Encoding(Bitmap image, ref int persen)
         {
-            this.CovertPixel(image);
+            this.CovertPixel(image, ref persen);
             ShannonFanoCode();
+            persen += 30;
 
             String bit = "";
             for (int i = 0; i < image.Height; i++)
             {
+                int persen2 = (int)Math.Ceiling(((double)i / image.Height * 100) * 0.4);
+                persen += persen2;
                 for (int j = 0; j < image.Width; j++)
                 {
                     //red

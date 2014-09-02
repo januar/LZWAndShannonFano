@@ -73,15 +73,20 @@ namespace LZWAndShannonFano
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            //Your background task goes here
-            while(procesedFinished == false)
+            if (LZW)
             {
-                // Report progress to 'UI' thread
-                double persen = (double)byteProcessed / maxByte * 100;
-                backgroundWorker1.ReportProgress((int)Math.Ceiling(persen));
-                //Console.WriteLine(persen);
-                // Simulate long task
-                //System.Threading.Thread.Sleep(5);
+                while (procesedFinished == false)
+                {
+                    double persen = (double)byteProcessed / maxByte * 100;
+                    backgroundWorker1.ReportProgress((int)Math.Ceiling(persen));
+                }
+            }
+            else 
+            {
+                while (procesedFinished == false)
+                {
+                    backgroundWorker1.ReportProgress(byteProcessed);
+                }
             }
         }
 
@@ -134,13 +139,14 @@ namespace LZWAndShannonFano
 
             SetTextCallback de = new SetTextCallback(SetText);
             System.Diagnostics.Stopwatch sWatch = new System.Diagnostics.Stopwatch();
+            progressBar1.Visible = true;
+            procesedFinished = false;
+            backgroundWorker1.RunWorkerAsync();
             if (LZW)
             {
-                progressBar1.Visible = true;
+
                 string text = File.ReadAllText(txtFile.Text, System.Text.ASCIIEncoding.Default);
                 maxByte = text.Length;
-                procesedFinished = false;
-                backgroundWorker1.RunWorkerAsync();
                 Thread LZWThread = new Thread(
                     new ThreadStart(() =>
                     {
@@ -181,7 +187,7 @@ namespace LZWAndShannonFano
                         string imageType = checkImageType(info);
                         string resultPath = txtSimpan.Text;
 
-                        String encodingCode = encoder.Encoding(image);
+                        String encodingCode = encoder.Encoding(image, ref byteProcessed);
                         encodingCode =  imageType + "\n" + image.Width + "\n" + image.Height + "\n" + encodingCode;
 
                         compressFile = info.Name.Substring(0, info.Name.Length - 4);
@@ -189,7 +195,7 @@ namespace LZWAndShannonFano
                         File.WriteAllText(resultPath + "\\" + compressFile + ".sfc", encoder.GetSFCode());
 
                         sWatch.Stop();
-
+                        procesedFinished = true;
                         this.Invoke(de, new object[] { info.Length + " Bytes", TXT_KOMPRES_SIZE });
                         this.Invoke(de, new object[] { compressFile + ".sf", TXT_KOMPRES });
                         this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
