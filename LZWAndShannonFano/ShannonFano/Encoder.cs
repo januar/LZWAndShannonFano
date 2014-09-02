@@ -101,7 +101,7 @@ namespace LZWAndShannonFano.ShannonFano
                              where s.Simbol == image.GetPixel(j, i).B
                              select s.Code).FirstOrDefault();
                     bit += encod;
-                    Console.WriteLine(i + "-" + j);
+                    //Console.WriteLine(i + "-" + j);
                 }
             }
 
