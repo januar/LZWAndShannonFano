@@ -10,6 +10,7 @@ using System.IO;
 using System.Threading;
 
 using FileTypeDetective;
+using LZWAndShannonFano.LZW;
 
 namespace LZWAndShannonFano
 {
@@ -184,14 +185,25 @@ namespace LZWAndShannonFano
                         ShannonFano.Encoder encoder = new ShannonFano.Encoder();
                         Bitmap image = (Bitmap)Bitmap.FromFile(openFileDialog1.FileName);
                         FileInfo info = new FileInfo(openFileDialog1.FileName);
-                        string imageType = checkImageType(info);
+                        //string imageType = checkImageType(info);
                         string resultPath = txtSimpan.Text;
 
-                        String encodingCode = encoder.Encoding(image, ref byteProcessed);
-                        encodingCode =  imageType + "\n" + image.Width + "\n" + image.Height + "\n" + encodingCode;
+                        String encodingString = encoder.Encoding(image, ref byteProcessed);
+                        byte[] encodingCode = encodingString.ToByteArray();
+                        byte[] width = BitConverter.GetBytes(image.Width);
+                        byte[] height = BitConverter.GetBytes(image.Height);
+                        byte[] resultEncoding = new byte[encodingCode.Length + width.Length + height.Length + 3];
+                        resultEncoding[0] = Convert.ToByte(checkImageType(info));
+                        resultEncoding[1] = Convert.ToByte(width.Length);
+                        resultEncoding[2] = Convert.ToByte(height.Length);
+                        width.CopyTo(resultEncoding, 3);
+                        height.CopyTo(resultEncoding, 3 + width.Length);
+                        encodingCode.CopyTo(resultEncoding, 3 + width.Length + height.Length);
+
+                        //encodingString =  imageType + "\n" + image.Width + "\n" + image.Height + "\n" + encodingString;
 
                         compressFile = info.Name.Substring(0, info.Name.Length - 4);
-                        File.WriteAllText(resultPath +"\\"+ compressFile + ".sf", encodingCode);
+                        File.WriteAllBytes(resultPath + "\\" + compressFile + ".sf", resultEncoding);
                         File.WriteAllText(resultPath + "\\" + compressFile + ".sfc", encoder.GetSFCode());
 
                         sWatch.Stop();
@@ -206,27 +218,27 @@ namespace LZWAndShannonFano
             }
         }
 
-        private string checkImageType(FileInfo info)
+        private int checkImageType(FileInfo info)
         {
             FileType fileType = info.GetFileType();
             if (fileType.extension == "jpg")
             {
-                return ShannonFano.SFCode.JPG.ToString();
+                return ShannonFano.SFCode.JPG;
             }
             else if (fileType.extension == "bmp")
             {
-                return ShannonFano.SFCode.BMP.ToString();
+                return ShannonFano.SFCode.BMP;
             }
             else if (fileType.extension == "png")
             {
-                return ShannonFano.SFCode.PNG.ToString();
+                return ShannonFano.SFCode.PNG;
             }
             else if (fileType.extension == "gif")
             {
-                return ShannonFano.SFCode.GIF.ToString();
+                return ShannonFano.SFCode.GIF;
             }
             else {
-                return ShannonFano.SFCode.TIFF.ToString();
+                return ShannonFano.SFCode.TIFF;
             }
         }
 

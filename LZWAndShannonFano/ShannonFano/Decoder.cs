@@ -41,19 +41,27 @@ namespace LZWAndShannonFano.ShannonFano
             int j = 1;
             while (i < code.Length)
             {
-                persen = (int)Math.Ceiling((double)i / code.Length * 100);
-                String binary = "";
-                binary = code.Substring(i, j);
-                var sfitem = (from sf in SFCode
-                              where sf.Code == binary
-                              select sf).FirstOrDefault();
-                if (sfitem == null)
+                try
                 {
-                    j++;
+                    persen = (int)Math.Ceiling((double)i / code.Length * 100);
+                    String binary = "";
+                    binary = code.Substring(i, j);
+                    var sfitem = (from sf in SFCode
+                                  where sf.Code == binary
+                                  select sf).FirstOrDefault();
+                    if (sfitem == null)
+                    {
+                        j++;
+                    }
+                    else
+                    {
+                        tempImage.Add(sfitem.Simbol);
+                        i += j;
+                        j = 1;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    tempImage.Add(sfitem.Simbol);
                     i += j;
                     j = 1;
                 }
@@ -69,6 +77,23 @@ namespace LZWAndShannonFano.ShannonFano
                 }
             }
             return image;
+        }
+
+        public void getResolution(ref int width, ref int height, int widthLeng, int heightLeng, byte[] encodingByte)
+        {
+            byte[] temp = new byte[widthLeng];
+            for (int i = 0; i < widthLeng; i++)
+            {
+                temp[i] = encodingByte[i + 3];
+            }
+            width = BitConverter.ToInt32(temp, 0);
+
+            temp = new byte[heightLeng];
+            for (int i = 0; i < heightLeng; i++)
+            {
+                temp[i] = encodingByte[i + widthLeng + 3];
+            }
+            height = BitConverter.ToInt32(temp, 0);
         }
     }
 }

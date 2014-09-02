@@ -104,7 +104,7 @@ namespace LZWAndShannonFano.ShannonFano
                     //Console.WriteLine(i + "-" + j);
                 }
             }
-
+            persen = 100;
             return bit;
         }
 

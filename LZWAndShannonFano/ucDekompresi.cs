@@ -10,6 +10,7 @@ using System.IO;
 using System.Threading;
 
 using FileTypeDetective;
+using LZWAndShannonFano.LZW;
 
 namespace LZWAndShannonFano
 {
@@ -222,12 +223,18 @@ namespace LZWAndShannonFano
                         String sfc = File.ReadAllText(sfcFile + ".sfc");
                         decoder.SetSFCode(sfc);
 
-                        StreamReader sr = new StreamReader(openFileDialog1.FileName);
-                        int fileType = Int32.Parse(sr.ReadLine());
-                        int width = Int32.Parse(sr.ReadLine());
-                        int height = Int32.Parse(sr.ReadLine());
+                        byte[] encodingByte = File.ReadAllBytes(openFileDialog1.FileName);
+                        int fileType = Convert.ToInt32(encodingByte[0]);
+                        int width = 0;
+                        int height = 0;
+                        int widthLeng = Convert.ToInt32(encodingByte[1]);
+                        int heightLeng = Convert.ToInt32(encodingByte[2]);
+                        decoder.getResolution(ref width, ref height, widthLeng, heightLeng, encodingByte);
+                        byte[] decodingByte = new byte[encodingByte.Length - (3 + widthLeng + heightLeng)];
+                        Array.Copy(encodingByte, 3 + widthLeng + heightLeng, decodingByte, 0, decodingByte.Length);
 
-                        Bitmap decImage = decoder.Decoding(sr.ReadLine(), width, height, ref byteProcessed);
+                        File.WriteAllBytes("test.sf", decodingByte);
+                        Bitmap decImage = decoder.Decoding(decodingByte.GetBinaryString(), width, height, ref byteProcessed);
                         String type = "";
                         if (fileType == ShannonFano.SFCode.BMP)
                         {
