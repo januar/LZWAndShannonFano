@@ -18,7 +18,6 @@ namespace LZWAndShannonFano
     {
         public bool LZW = true;
 
-        int maxByte = 0;
         int byteProcessed = 0;
         bool procesedFinished = false;
         string compressFile;
@@ -71,20 +70,9 @@ namespace LZWAndShannonFano
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            if (LZW)
+            while (procesedFinished == false)
             {
-                while (procesedFinished == false)
-                {
-                    double persen = (double)byteProcessed / maxByte * 100;
-                    backgroundWorker1.ReportProgress((int)Math.Ceiling(persen));
-                }
-            }
-            else 
-            {
-                while (procesedFinished == false)
-                {
-                    backgroundWorker1.ReportProgress(byteProcessed);
-                }
+                backgroundWorker1.ReportProgress(byteProcessed);
             }
         }
 
@@ -135,7 +123,6 @@ namespace LZWAndShannonFano
                 return;
             }
 
-            maxByte = 0;
             byteProcessed = 0;
             progressBar1.Value = 0;
             SetTextCallback de = new SetTextCallback(SetText);
@@ -147,7 +134,6 @@ namespace LZWAndShannonFano
             {
 
                 string text = File.ReadAllText(txtFile.Text, System.Text.ASCIIEncoding.Default);
-                maxByte = text.Length;
                 Thread LZWThread = new Thread(
                     new ThreadStart(() =>
                     {

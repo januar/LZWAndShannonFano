@@ -18,7 +18,7 @@ namespace LZWAndShannonFano.LZW
             dict = table.Table;
         }
 
-        public byte[] Apply(ref int total, string input)
+        public byte[] Apply(ref int persen, string input)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -28,12 +28,12 @@ namespace LZWAndShannonFano.LZW
             {
                 w = input[i].ToString();
 
-                total = i++;
+                i++;
+                persen = (int)Math.Ceiling((double)i / input.Length * 100);
 
                 while (dict.ContainsKey(w) && i < input.Length)
                 {
                     w += input[i];
-                    total = i++;
                 }
 
                 if (dict.ContainsKey(w) == false)
