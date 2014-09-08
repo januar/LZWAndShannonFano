@@ -29,6 +29,7 @@ namespace LZWAndShannonFano
         public const int TXT_KOMPRES = 2;
         public const int TXT_KOMPRES_SIZE = 3;
         public const int TXT_KOMPRES_TIME = 4;
+        public const int TXT_RASIO = 5;
 
         public ucKompresi(bool lzw)
         {
@@ -65,6 +66,7 @@ namespace LZWAndShannonFano
             txtKompresiFile.Text = "";
             txtWktKompresi.Text = "";
             lblInfo.Text = "";
+            txtRasio.Text = "";
             progressBar1.Value = 0;
         }
 
@@ -74,6 +76,7 @@ namespace LZWAndShannonFano
             {
                 backgroundWorker1.ReportProgress(byteProcessed);
             }
+            backgroundWorker1.ReportProgress(100);
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -100,6 +103,10 @@ namespace LZWAndShannonFano
             else if (type == TXT_KOMPRES_TIME)
             {
                 txtWktKompresi.Text = text;
+            }
+            else if (type == TXT_RASIO)
+            {
+                txtRasio.Text = text;
             }
         }
 
@@ -152,10 +159,13 @@ namespace LZWAndShannonFano
                         File.WriteAllBytes(txtSimpan.Text + "\\" + compressFile, b);
 
                         sWatch.Stop();
+                        FileInfo fileinfo = new FileInfo(openFileDialog1.FileName);
+                        int rasio = (int)((double)fileSizeConvert / fileinfo.Length * 100);
                         this.Invoke(de, new object[] { fileSizeConvert.ToString() + " Bytes", TXT_KOMPRES_SIZE });
                         this.Invoke(de, new object[] { compressFile, TXT_KOMPRES });
                         this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
                         this.Invoke(de, new object[] { "", LBL_INFO });
+                        this.Invoke(de, new object[] { rasio.ToString() + " %", TXT_RASIO});
                         MessageBox.Show("Success", "Information", MessageBoxButtons.OK);
                     })
                     );
@@ -182,11 +192,14 @@ namespace LZWAndShannonFano
                         File.WriteAllText(resultPath + "\\" + compressFile + ".sfc", encoder.GetSFCode());
 
                         sWatch.Stop();
+                        FileInfo fileinfo = new FileInfo(resultPath + "\\" + compressFile + ".sf");
+                        int rasio = (int)((double)fileinfo.Length / info.Length * 100);
                         procesedFinished = true;
-                        this.Invoke(de, new object[] { info.Length + " Bytes", TXT_KOMPRES_SIZE });
+                        this.Invoke(de, new object[] { fileinfo.Length + " Bytes", TXT_KOMPRES_SIZE });
                         this.Invoke(de, new object[] { compressFile + ".sf", TXT_KOMPRES });
                         this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
-                        this.Invoke(de, new object[] { "", LBL_INFO });
+                        //this.Invoke(de, new object[] { "", LBL_INFO });
+                        this.Invoke(de, new object[] { rasio.ToString() + " %", TXT_RASIO });
                         MessageBox.Show("Success", "Information", MessageBoxButtons.OK);
                     }));
                 SFThread.Start();

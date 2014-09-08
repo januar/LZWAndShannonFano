@@ -18,7 +18,6 @@ namespace LZWAndShannonFano
     {
         public bool LZW = true;
 
-        int maxByte = 0;
         int byteProcessed = 0;
         bool procesedFinished = false;
         string compressFile;
@@ -33,6 +32,7 @@ namespace LZWAndShannonFano
         public const int TXT_FILE_NAME = 5;
         public const int TXT_FILE_TYPE = 6;
         public const int TXT_FILE_SIZE = 7;
+        public const int TXT_RASIO = 8;
 
         public ucDekompresi(bool lzw)
         {
@@ -71,33 +71,21 @@ namespace LZWAndShannonFano
             txtKompresiFile.Text = fileinfo.Name;
             txtFileSizeKompresi.Text = fileinfo.Length.ToString() + " Bytes";
 
-            maxByte = 0;
             byteProcessed = 0;
             progressBar1.Value = 0;
             txtFilename.Text = "";
             txtFilesize.Text = "";
             txtWktKompresi.Text = "";
             lblInfo.Text = "";
+            txtRasio.Text = "";
         }
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             //Your background task goes here
-            if (LZW)
+            while (procesedFinished == false)
             {
-                while (procesedFinished == false)
-                {
-                    double persen = (double)byteProcessed / maxByte * 100;
-                    backgroundWorker1.ReportProgress((int)Math.Ceiling(persen));
-                }
-                backgroundWorker1.ReportProgress(100);
-            }
-            else 
-            {
-                while (procesedFinished == false)
-                {
-                    backgroundWorker1.ReportProgress(byteProcessed);
-                }
+                backgroundWorker1.ReportProgress(byteProcessed);
             }
         }
 
@@ -136,6 +124,10 @@ namespace LZWAndShannonFano
             {
                 txtFiletype.Text = text;
             }
+            else if (type == TXT_RASIO)
+            {
+                txtRasio.Text = text;
+            }
         }
 
         private void btnDelompres_Click(object sender, EventArgs e)
@@ -162,14 +154,12 @@ namespace LZWAndShannonFano
             System.Diagnostics.Stopwatch sWatch = new System.Diagnostics.Stopwatch();
             progressBar1.Visible = true;
             procesedFinished = false;
-            maxByte = 0;
             byteProcessed = 0;
             progressBar1.Value = 0;
             if (LZW)
             {
                 
                 string text = File.ReadAllText(txtFile.Text, System.Text.ASCIIEncoding.Default);
-                maxByte = text.Length;
                 backgroundWorker1.RunWorkerAsync();
                 Thread LZWThread = new Thread(
                     new ThreadStart(() =>
@@ -182,7 +172,7 @@ namespace LZWAndShannonFano
                         compressFile = txtSimpan.Text + "\\" + fileInfo.Name.Substring(0, fileInfo.Name.Length - 4);
                         LZWAndShannonFano.LZW.Decoder decoder = new LZW.Decoder();
                         byte[] bo = File.ReadAllBytes(txtFile.Text);
-                        string decodedOutput = decoder.Apply(bo, ref maxByte, ref byteProcessed);
+                        string decodedOutput = decoder.Apply(bo, ref byteProcessed);
                         File.WriteAllText(compressFile, decodedOutput, System.Text.Encoding.Default);
                         String resultFile = changeExtension(compressFile);
                         pctImage.Image = (Bitmap) Bitmap.FromFile(resultFile);
@@ -190,11 +180,13 @@ namespace LZWAndShannonFano
                         
                         sWatch.Stop();
                         fileInfo = new FileInfo(resultFile);
+                        int rasio = (int)((double)bo.Length / fileInfo.Length * 100);
                         this.Invoke(de, new object[] { fileInfo.Length + " Bytes", TXT_FILE_SIZE });
                         this.Invoke(de, new object[] { fileInfo.Name, TXT_FILE_NAME });
                         this.Invoke(de, new object[] { fileInfo.Extension, TXT_FILE_TYPE });
                         this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
                         this.Invoke(de, new object[] { "", LBL_INFO });
+                        this.Invoke(de, new object[] { rasio.ToString() + " %", TXT_RASIO });
                         MessageBox.Show("Success", "Information", MessageBoxButtons.OK);
                     })
                     );
@@ -234,11 +226,13 @@ namespace LZWAndShannonFano
                         sWatch.Stop();
                         procesedFinished = true;
                         fileInfo = new FileInfo(resultFile);
+                        int rasio = (int)((double)decodingByte.Length / fileInfo.Length * 100);
                         this.Invoke(de, new object[] { fileInfo.Length + " Bytes", TXT_FILE_SIZE });
                         this.Invoke(de, new object[] { fileInfo.Name, TXT_FILE_NAME });
                         this.Invoke(de, new object[] { fileInfo.Extension, TXT_FILE_TYPE });
                         this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
                         this.Invoke(de, new object[] { "", LBL_INFO });
+                        this.Invoke(de, new object[] { rasio.ToString() + " %", TXT_RASIO });
                         MessageBox.Show("Success", "Information", MessageBoxButtons.OK);
                     }));
                 SFThread.Start();

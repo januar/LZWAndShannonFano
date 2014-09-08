@@ -17,14 +17,13 @@ namespace LZWAndShannonFano.LZW
             dict = table.Table;  
         }
 
-        public string Apply(byte[] bytes, ref int totalSize, ref int processedSize)
+        public string Apply(byte[] bytes, ref int processedSize)
         {
             string output = bytes.GetBinaryString();
-            totalSize = output.Length;
             return Decode(ref processedSize, output);
         }
 
-        public string Decode(ref int total, string output)
+        public string Decode(ref int persen, string output)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -50,7 +49,8 @@ namespace LZWAndShannonFano.LZW
                     break;
                 }
 
-                total = i += codeLen;
+                i += codeLen;
+                persen = (int)Math.Ceiling((double)i / output.Length * 100);
 
                 int value = Convert.ToInt32(w, 2);
 

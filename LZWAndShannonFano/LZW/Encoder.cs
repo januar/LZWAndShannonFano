@@ -34,6 +34,7 @@ namespace LZWAndShannonFano.LZW
                 while (dict.ContainsKey(w) && i < input.Length)
                 {
                     w += input[i];
+                    i++;
                 }
 
                 if (dict.ContainsKey(w) == false)
