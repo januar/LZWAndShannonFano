@@ -43,7 +43,7 @@ namespace LZWAndShannonFano.ShannonFano
             int temp = persen += 30;
             Console.WriteLine("ShannonFanoCode = " + persen);
 
-            String bit = "";
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < image.Length; i++)
             {
                 int persen2 = (int)Math.Ceiling(((double)i / image.Length * 100) * 0.4);
@@ -51,11 +51,11 @@ namespace LZWAndShannonFano.ShannonFano
                 var encod = (from s in SFCode
                              where s.Simbol == image[i]
                              select s.Code).FirstOrDefault();
-                bit += encod;
+                sb.Append(encod);
             }
 
             persen = 100;
-            return bit;
+            return sb.ToString();
         }
 
         public void ShannonFanoCode()

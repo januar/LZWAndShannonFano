@@ -192,10 +192,9 @@ namespace LZWAndShannonFano
                         File.WriteAllText(resultPath + "\\" + compressFile + ".sfc", encoder.GetSFCode());
 
                         sWatch.Stop();
-                        FileInfo fileinfo = new FileInfo(resultPath + "\\" + compressFile + ".sf");
-                        int rasio = (int)((double)fileinfo.Length / info.Length * 100);
+                        int rasio = (int)((double)encodingCode.Length / info.Length * 100);
                         procesedFinished = true;
-                        this.Invoke(de, new object[] { fileinfo.Length + " Bytes", TXT_KOMPRES_SIZE });
+                        this.Invoke(de, new object[] { encodingCode.Length + " Bytes", TXT_KOMPRES_SIZE });
                         this.Invoke(de, new object[] { compressFile + ".sf", TXT_KOMPRES });
                         this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
                         //this.Invoke(de, new object[] { "", LBL_INFO });

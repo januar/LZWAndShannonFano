@@ -167,7 +167,7 @@ namespace LZWAndShannonFano
                         //this.Invoke(de, new object[] { "Generate ASCI table", LBL_INFO });
                         sWatch.Start();
                         FileInfo fileInfo = new FileInfo(openFileDialog1.FileName);
-                        //this.Invoke(de, new object[] { "Start dencoding " + fileInfo.Name, LBL_INFO });
+                        //this.Invoke(de, new object[] { "Start decoding " + fileInfo.Name, LBL_INFO });
 
                         compressFile = txtSimpan.Text + "\\" + fileInfo.Name.Substring(0, fileInfo.Name.Length - 4);
                         LZWAndShannonFano.LZW.Decoder decoder = new LZW.Decoder();
