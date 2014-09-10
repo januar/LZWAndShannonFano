@@ -167,7 +167,7 @@ namespace LZWAndShannonFano
                         //this.Invoke(de, new object[] { "Generate ASCI table", LBL_INFO });
                         sWatch.Start();
                         FileInfo fileInfo = new FileInfo(openFileDialog1.FileName);
-                        this.Invoke(de, new object[] { "Start dencoding " + fileInfo.Name, LBL_INFO });
+                        //this.Invoke(de, new object[] { "Start dencoding " + fileInfo.Name, LBL_INFO });
 
                         compressFile = txtSimpan.Text + "\\" + fileInfo.Name.Substring(0, fileInfo.Name.Length - 4);
                         LZWAndShannonFano.LZW.Decoder decoder = new LZW.Decoder();
@@ -185,7 +185,7 @@ namespace LZWAndShannonFano
                         this.Invoke(de, new object[] { fileInfo.Name, TXT_FILE_NAME });
                         this.Invoke(de, new object[] { fileInfo.Extension, TXT_FILE_TYPE });
                         this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
-                        this.Invoke(de, new object[] { "", LBL_INFO });
+                        //this.Invoke(de, new object[] { "", LBL_INFO });
                         this.Invoke(de, new object[] { rasio.ToString() + " %", TXT_RASIO });
                         MessageBox.Show("Success", "Information", MessageBoxButtons.OK);
                     })
@@ -208,7 +208,7 @@ namespace LZWAndShannonFano
                         sWatch.Start();
 
                         FileInfo fileInfo = new FileInfo(openFileDialog1.FileName);
-                        this.Invoke(de, new object[] { "Start dencoding " + fileInfo.Name, LBL_INFO });
+                        //this.Invoke(de, new object[] { "Start dencoding " + fileInfo.Name, LBL_INFO });
 
                         compressFile = txtSimpan.Text + "\\" + fileInfo.Name.Substring(0, fileInfo.Name.Length - 3);
                         ShannonFano.Decoder decoder = new ShannonFano.Decoder();
@@ -231,7 +231,7 @@ namespace LZWAndShannonFano
                         this.Invoke(de, new object[] { fileInfo.Name, TXT_FILE_NAME });
                         this.Invoke(de, new object[] { fileInfo.Extension, TXT_FILE_TYPE });
                         this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
-                        this.Invoke(de, new object[] { "", LBL_INFO });
+                        //this.Invoke(de, new object[] { "", LBL_INFO });
                         this.Invoke(de, new object[] { rasio.ToString() + " %", TXT_RASIO });
                         MessageBox.Show("Success", "Information", MessageBoxButtons.OK);
                     }));
