@@ -44,7 +44,6 @@ namespace LZWAndShannonFano.ShannonFano
             Console.WriteLine("ShannonFanoCode = " + persen);
 
             StringBuilder sb = new StringBuilder();
-            String bit = "";
             for (int i = 0; i < image.Length; i++)
             {
                 int persen2 = (int)Math.Ceiling(((double)i / image.Length * 100) * 0.4);

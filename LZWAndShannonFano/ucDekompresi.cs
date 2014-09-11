@@ -212,7 +212,7 @@ namespace LZWAndShannonFano
                         sWatch.Start();
 
                         FileInfo fileInfo = new FileInfo(openFileDialog1.FileName);
-                        //this.Invoke(de, new object[] { "Start decoding " + fileInfo.Name, LBL_INFO });
+                        //this.Invoke(de, new object[] { "Start dencoding " + fileInfo.Name, LBL_INFO });
 
                         compressFile = txtSimpan.Text + "\\" + fileInfo.Name.Substring(0, fileInfo.Name.Length - 3);
                         ShannonFano.Decoder decoder = new ShannonFano.Decoder();
