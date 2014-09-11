@@ -156,6 +156,7 @@ namespace LZWAndShannonFano
             procesedFinished = false;
             byteProcessed = 0;
             progressBar1.Value = 0;
+            pctImage.Image = null;
             if (LZW)
             {
                 
@@ -181,6 +182,9 @@ namespace LZWAndShannonFano
                         sWatch.Stop();
                         fileInfo = new FileInfo(resultFile);
                         int rasio = (int)((double)bo.Length / fileInfo.Length * 100);
+                        if (IsHandleCreated)
+                            this.BeginInvoke(de, new object[] { "", TXT_FILE_SIZE });
+
                         this.Invoke(de, new object[] { fileInfo.Length + " Bytes", TXT_FILE_SIZE });
                         this.Invoke(de, new object[] { fileInfo.Name, TXT_FILE_NAME });
                         this.Invoke(de, new object[] { fileInfo.Extension, TXT_FILE_TYPE });
@@ -227,6 +231,9 @@ namespace LZWAndShannonFano
                         procesedFinished = true;
                         fileInfo = new FileInfo(resultFile);
                         int rasio = (int)((double)decodingByte.Length / fileInfo.Length * 100);
+                        if(IsHandleCreated)
+                            this.Invoke(de, new object[] {"", TXT_FILE_SIZE });
+
                         this.Invoke(de, new object[] { fileInfo.Length + " Bytes", TXT_FILE_SIZE });
                         this.Invoke(de, new object[] { fileInfo.Name, TXT_FILE_NAME });
                         this.Invoke(de, new object[] { fileInfo.Extension, TXT_FILE_TYPE });
@@ -273,8 +280,13 @@ namespace LZWAndShannonFano
 
         private void checkFileExist(string fileName)
         {
-            if (File.Exists(fileName))
-                File.Delete(fileName);
+            try
+            {
+                if (File.Exists(fileName))
+                    File.Delete(fileName);
+            }
+            catch
+            { }
         }
 
         private void btnSimpan_Click(object sender, EventArgs e)

@@ -26,12 +26,14 @@ namespace LZWAndShannonFano
                 if (item.GetType().Name == "ucDekompresi")
                 {
                     ucDekompresi delete = (ucDekompresi)item;
+                    delete.pctImage.Image = null;
                     this.Controls.Remove(delete);
                 }
 
                 if (item.GetType().Name == "ucKompresi")
                 {
                     ucKompresi delete = (ucKompresi)item;
+                    delete.pctImage.Image = null;
                     this.Controls.Remove(delete);
                 }
             }
@@ -47,12 +49,14 @@ namespace LZWAndShannonFano
                 if (item.GetType().Name == "ucDekompresi")
                 {
                     ucDekompresi delete = (ucDekompresi)item;
+                    delete.pctImage.Image = null;
                     this.Controls.Remove(delete);
                 }
 
                 if (item.GetType().Name == "ucKompresi")
                 {
                     ucKompresi delete = (ucKompresi)item;
+                    delete.pctImage.Image = null;
                     this.Controls.Remove(delete);
                 }
             }

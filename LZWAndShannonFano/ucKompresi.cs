@@ -132,26 +132,22 @@ namespace LZWAndShannonFano
 
             byteProcessed = 0;
             progressBar1.Value = 0;
-            SetTextCallback de = new SetTextCallback(SetText);
             System.Diagnostics.Stopwatch sWatch = new System.Diagnostics.Stopwatch();
             progressBar1.Visible = true;
             procesedFinished = false;
             backgroundWorker1.RunWorkerAsync();
             if (LZW)
             {
-
+                SetTextCallback de = new SetTextCallback(SetText);
                 string text = File.ReadAllText(txtFile.Text, System.Text.ASCIIEncoding.Default);
                 Thread LZWThread = new Thread(
                     new ThreadStart(() =>
                     {
-                        //this.Invoke(de, new object[] { "Generate ASCI table", LBL_INFO });
                         sWatch.Start();
                         LZWAndShannonFano.LZW.ANSI ascii = new LZWAndShannonFano.LZW.ANSI();
                         ascii.WriteToFile();
-                        //this.Invoke(de, new object[] { "ASCI table generated", LBL_INFO });
 
                         LZWAndShannonFano.LZW.Encoder encoder = new LZWAndShannonFano.LZW.Encoder();
-                        //this.Invoke(de, new object[] { "Start encoding " + txtFilename.Text, LBL_INFO });
                         byte[] b = encoder.Apply(ref byteProcessed, text);
                         compressFile = txtFilename.Text.Substring(0, txtFilename.Text.Length - 4) + ".lzw";
                         procesedFinished = true;
@@ -161,10 +157,11 @@ namespace LZWAndShannonFano
                         sWatch.Stop();
                         FileInfo fileinfo = new FileInfo(openFileDialog1.FileName);
                         int rasio = (int)((double)fileSizeConvert / fileinfo.Length * 100);
+                        if (IsHandleCreated)
+                            this.BeginInvoke(de, new object[] { "", TXT_KOMPRES_SIZE });
                         this.Invoke(de, new object[] { fileSizeConvert.ToString() + " Bytes", TXT_KOMPRES_SIZE });
                         this.Invoke(de, new object[] { compressFile, TXT_KOMPRES });
                         this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
-                        //this.Invoke(de, new object[] { "", LBL_INFO });
                         this.Invoke(de, new object[] { rasio.ToString() + " %", TXT_RASIO});
                         MessageBox.Show("Success", "Information", MessageBoxButtons.OK);
                     })
@@ -172,16 +169,15 @@ namespace LZWAndShannonFano
                 LZWThread.Start();
             }
             else {
-
+                
                 Thread SFThread = new Thread(
                     new ThreadStart(() =>
                     {
                         sWatch.Start();
-
+                        SetTextCallback de = new SetTextCallback(SetText);
                         ShannonFano.Encoder encoder = new ShannonFano.Encoder();
                         byte[] image = File.ReadAllBytes(openFileDialog1.FileName);
                         FileInfo info = new FileInfo(openFileDialog1.FileName);
-                        //string imageType = checkImageType(info);
                         string resultPath = txtSimpan.Text;
 
                         String encodingString = encoder.Encoding(image, ref byteProcessed);
@@ -194,10 +190,13 @@ namespace LZWAndShannonFano
                         sWatch.Stop();
                         int rasio = (int)((double)encodingCode.Length / info.Length * 100);
                         procesedFinished = true;
-                        this.Invoke(de, new object[] { encodingCode.Length + " Bytes", TXT_KOMPRES_SIZE });
+                        Console.WriteLine(IsHandleCreated + "-" + InvokeRequired);
+                        if(IsHandleCreated)
+                            this.BeginInvoke(de, new object[] { encodingCode.Length.ToString() + " Bytes", TXT_KOMPRES_SIZE });
+
+                        this.Invoke(de, new object[] { encodingCode.Length.ToString() + " Bytes", TXT_KOMPRES_SIZE });
                         this.Invoke(de, new object[] { compressFile + ".sf", TXT_KOMPRES });
                         this.Invoke(de, new object[] { Math.Round(sWatch.Elapsed.TotalSeconds, 2).ToString() + " second", TXT_KOMPRES_TIME });
-                        //this.Invoke(de, new object[] { "", LBL_INFO });
                         this.Invoke(de, new object[] { rasio.ToString() + " %", TXT_RASIO });
                         MessageBox.Show("Success", "Information", MessageBoxButtons.OK);
                     }));

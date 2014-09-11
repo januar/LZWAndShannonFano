@@ -304,7 +304,6 @@
         private System.Windows.Forms.TextBox txtFilesize;
         private System.Windows.Forms.TextBox txtFiletype;
         private System.Windows.Forms.TextBox txtFilename;
-        private System.Windows.Forms.PictureBox pctImage;
         private System.Windows.Forms.TextBox txtFile;
         private System.Windows.Forms.Button btnOpenFile;
         private System.Windows.Forms.Label lblTitleUC;
@@ -322,5 +321,6 @@
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtRasio;
+        public System.Windows.Forms.PictureBox pctImage;
     }
 }
